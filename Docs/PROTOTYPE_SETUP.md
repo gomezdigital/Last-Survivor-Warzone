@@ -79,3 +79,20 @@ Make the buttons large enough to tap comfortably. Keep their labels/icons readab
 ## 6. Report bugs accurately
 
 If Unity shows a Console error, copy the full first red error and its file/line number. Fix compile errors before adding new features. After the first scene compiles and runs, priorities include camera collision, a proper game-state/death loop, enemy navigation, weapon feedback, and testing the touch layout on real devices.
+
+
+## 7. Defeat screen setup
+
+1. Under the Canvas, create a panel named `DefeatPanel` and keep it inactive by default.
+2. Add a heading such as `MISSION FAILED` and a message explaining that the player was eliminated.
+3. Add a Restart button to the panel.
+4. Create an empty object named `GameFlow` and attach `GameOverController`.
+5. Assign the Player's `SurvivalStats`, the DefeatPanel, and the optional message Text field.
+6. On the Restart button's On Click event, add GameFlow and select `GameOverController.RestartMission`.
+7. Add the test scene to the project's Build Settings / Build Profiles scene list. The restart method needs a valid scene build index.
+
+When player health reaches zero, the controller displays the panel and pauses the game. Restart resets the time scale and reloads the active scene.
+
+## 8. Survival pickup testing
+
+The existing `SurvivalStats.Heal` method can be called by a future pickup or inventory system. Healing is ignored if the player is already defeated or the healing amount is not positive.
