@@ -1,8 +1,8 @@
 using UnityEngine;
 
 /// <summary>
-/// Basic raycast weapon prototype. Add a fire-rate, ammunition, effects, and input UI
-/// before treating this as a complete weapon system.
+/// Basic raycast weapon prototype for keyboard/mouse and mobile fire-button input.
+/// Ammo, reload, fire rate, recoil, effects, and weapon animations are future tasks.
 /// </summary>
 public class SimpleWeapon : MonoBehaviour
 {
@@ -19,7 +19,7 @@ public class SimpleWeapon : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetButtonDown("Fire1") || MobileInputState.ConsumeFirePressed())
             Fire();
     }
 
@@ -32,11 +32,9 @@ public class SimpleWeapon : MonoBehaviour
         }
 
         Ray ray = aimCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
-
         if (Physics.Raycast(ray, out RaycastHit hit, range, hitLayers, QueryTriggerInteraction.Ignore))
         {
             IDamageable damageable = hit.collider.GetComponentInParent<IDamageable>();
-
             if (damageable != null)
                 damageable.TakeDamage(damage);
         }
