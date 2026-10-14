@@ -56,6 +56,19 @@ public class GameOverController : MonoBehaviour
 
         Time.timeScale = 0f;
         MobileInputState.ResetAll();
+
+        // Freeze gameplay scripts explicitly as well as pausing time.
+        ThirdPersonPlayerController movement = FindObjectOfType<ThirdPersonPlayerController>();
+        if (movement != null)
+            movement.enabled = false;
+
+        SimpleWeapon[] weapons = FindObjectsOfType<SimpleWeapon>();
+        foreach (SimpleWeapon weapon in weapons)
+            weapon.enabled = false;
+
+        SimpleEnemyAI[] enemies = FindObjectsOfType<SimpleEnemyAI>();
+        foreach (SimpleEnemyAI enemy in enemies)
+            enemy.enabled = false;
     }
 
     public void RestartMission()
