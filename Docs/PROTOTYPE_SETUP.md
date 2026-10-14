@@ -62,7 +62,7 @@ Make the buttons large enough to tap comfortably. Keep their labels/icons readab
 2. Create another UI Text anchored at the exact centre of the screen for a simple `+` crosshair. Make sure the crosshair is above the world view but does not block the action buttons.
 3. Attach `CombatHUDController` to an empty object on the Canvas.
 4. Assign the Player's **SimpleWeapon** and both Text objects to the controller. If the weapon is not assigned, it tries to find one in the scene.
-5. The ammo label updates when shots are fired and when a reload starts or finishes. Keyboard **R** or the mobile **Reload** button requests a reload.
+5. The ammo label updates when shots are fired and when a reload starts or finishes. A successful hit briefly changes the centre crosshair from `+` to a red `X`. Keyboard **R** or the mobile **Reload** button requests a reload.
 
 The controller uses Unity's legacy `UnityEngine.UI.Text` component for broad compatibility with the simple prototype. It does not create or style the UI objects automatically.
 
