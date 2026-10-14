@@ -46,6 +46,10 @@ public class SimpleEnemyAI : MonoBehaviour, IDamageable
         if (isDead || player == null)
             return;
 
+        SurvivalStats playerStats = player.GetComponent<SurvivalStats>();
+        if (playerStats != null && playerStats.IsDead)
+            return;
+
         Vector3 toPlayer = player.position - transform.position;
         toPlayer.y = 0f;
         float distance = toPlayer.magnitude;
@@ -71,7 +75,6 @@ public class SimpleEnemyAI : MonoBehaviour, IDamageable
 
         if (distance <= attackRange && Time.time >= nextAttackTime)
         {
-            SurvivalStats playerStats = player.GetComponent<SurvivalStats>();
             if (playerStats != null)
                 playerStats.TakeDamage(damagePerAttack);
 
