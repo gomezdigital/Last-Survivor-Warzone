@@ -1,9 +1,8 @@
 using UnityEngine;
 
 /// <summary>
-/// Starter third-person movement controller for Editor prototyping.
-/// Uses Unity's legacy Input Manager axes (Horizontal/Vertical).
-/// Mobile touch controls will be added in a later milestone.
+/// Third-person movement controller for Editor keyboard testing and on-screen mobile controls.
+/// Uses Unity's legacy Input Manager for keyboard input.
 /// </summary>
 [RequireComponent(typeof(CharacterController))]
 public class ThirdPersonPlayerController : MonoBehaviour
@@ -31,6 +30,12 @@ public class ThirdPersonPlayerController : MonoBehaviour
 
         if (cameraTransform == null && Camera.main != null)
             cameraTransform = Camera.main.transform;
+
+        if (gravity > -0.01f)
+        {
+            Debug.LogWarning("ThirdPersonPlayerController: Gravity should be negative. Resetting to -20.", this);
+            gravity = -20f;
+        }
     }
 
     private void Update()
@@ -43,11 +48,10 @@ public class ThirdPersonPlayerController : MonoBehaviour
 
     private void MovePlayer()
     {
-        float horizontal = Input.GetAxis("Horizontal");
-        float vertical = Input.GetAxis("Vertical");
-
-        Vector3 input = new Vector3(horizontal, 0f, vertical);
-        input = Vector3.ClampMagnitude(input, 1f);
+        Vector2 keyboardInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+        Vector2 input2D = keyboardInput.sqrMagnitude > 0.001f ? keyboardInput : MobileInputState.Move;
+        input2D = Vector2.ClampMagnitude(input2D, 1f);
+        Vector3 input = new Vector3(input2D.x, 0f, input2D.y);
 
         Vector3 forward = Vector3.forward;
         Vector3 right = Vector3.right;
@@ -64,7 +68,8 @@ public class ThirdPersonPlayerController : MonoBehaviour
         right.Normalize();
 
         Vector3 moveDirection = forward * input.z + right * input.x;
-        bool wantsToSprint = Input.GetKey(KeyCode.LeftShift) && input.sqrMagnitude > 0.01f;
+        bool sprintInput = Input.GetKey(KeyCode.LeftShift) || MobileInputState.SprintHeld;
+        bool wantsToSprint = sprintInput && input.sqrMagnitude > 0.01f;
         bool canSprint = survivalStats == null || survivalStats.CurrentStamina > 0.1f;
         bool isSprinting = wantsToSprint && canSprint;
         float speed = isSprinting ? sprintSpeed : walkSpeed;
@@ -77,24 +82,20 @@ public class ThirdPersonPlayerController : MonoBehaviour
         if (moveDirection.sqrMagnitude > 0.01f)
         {
             Quaternion targetRotation = Quaternion.LookRotation(moveDirection, Vector3.up);
-            transform.rotation = Quaternion.Slerp(
-                transform.rotation,
-                targetRotation,
-                rotationSpeed * Time.deltaTime
-            );
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
         }
 
         if (characterController.isGrounded && verticalVelocity < 0f)
             verticalVelocity = -2f;
 
-        if (characterController.isGrounded && Input.GetButtonDown("Jump"))
+        bool jumpRequested = Input.GetButtonDown("Jump") || MobileInputState.ConsumeJumpPressed();
+        if (characterController.isGrounded && jumpRequested)
             verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
 
         verticalVelocity += gravity * Time.deltaTime;
 
         Vector3 velocity = moveDirection * speed;
         velocity.y = verticalVelocity;
-
         characterController.Move(velocity * Time.deltaTime);
     }
 }
