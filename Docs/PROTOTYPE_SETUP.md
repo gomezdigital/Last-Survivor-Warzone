@@ -27,13 +27,13 @@ The starter scripts use Unity's legacy Input Manager APIs. If the project is con
 7. Add **SimpleWeapon** to Player or an empty child object and assign the scene camera to Aim Camera.
 8. Add a few cubes as obstacles and test movement, jumping, stamina, aiming, shooting, and enemy behavior.
 
-## 3. Add mobile controls to the Canvas
+## 3. Add mobile controls and HUD to the Canvas
 
-Create a **Canvas** (Screen Space - Overlay) and make sure the scene has an **EventSystem**. Use UI > Image for touch areas and UI > Slider for bars. Set the Canvas Scaler to **Scale With Screen Size** and use a reference resolution such as 1920 x 1080.
+Create a **Canvas** (Screen Space - Overlay) and make sure the scene has an **EventSystem**. Use UI > Image for touch areas, UI > Slider for bars, and UI > Text for simple labels. Set the Canvas Scaler to **Scale With Screen Size** and use a reference resolution such as 1920 x 1080.
 
 ### Left movement joystick
 1. Create a large circular Image near the bottom-left; make it roughly 180–220 pixels wide at the reference resolution.
-2. Add a smaller circular Image as a child, centered on the background.
+2. Create a smaller circular Image as a child, centered on the background.
 3. Attach `MobileJoystickControl` to the background Image and drag the child circle into its **Handle** field.
 4. Keep the joystick inside the safe screen area so it is not covered by Android system navigation.
 
@@ -44,18 +44,27 @@ Create a **Canvas** (Screen Space - Overlay) and make sure the scene has an **Ev
 4. Put the look-area Image behind the action buttons in the Canvas hierarchy, so the buttons receive touches first.
 
 ### Action buttons
-Create three visible UI Images or Buttons near the bottom-right and attach `MobileActionButton` to each:
+Create four visible UI Images or Buttons near the bottom-right and attach `MobileActionButton` to each:
 - Set **Action** to **Fire** for the fire button.
+- Set **Action** to **Reload** for the reload button.
 - Set **Action** to **Jump** for the jump button.
 - Set **Action** to **Sprint** for the sprint button. Sprint remains active while the finger is held down.
 
-Make the buttons large enough to tap comfortably. Keep their labels/icons readable and leave space around them. The scripts provide input behavior; they do not create or automatically style the UI objects.
+Make the buttons large enough to tap comfortably. Keep their labels/icons readable and leave space around them.
 
 ### Health and stamina HUD
 1. Create two UI Sliders near the top-left.
 2. Attach `MobileHUDController` to an empty object on the Canvas.
 3. Assign the Player's **SurvivalStats**, the health and stamina sliders, and optional legacy UI Text labels.
-4. The controller sets bar values from 0 to 1 and updates optional labels as the values change.
+
+### Ammo and crosshair HUD
+1. Create a UI Text near the top-right or bottom-right for ammunition.
+2. Create another UI Text anchored at the exact centre of the screen for a simple `+` crosshair. Make sure the crosshair is above the world view but does not block the action buttons.
+3. Attach `CombatHUDController` to an empty object on the Canvas.
+4. Assign the Player's **SimpleWeapon** and both Text objects to the controller. If the weapon is not assigned, it tries to find one in the scene.
+5. The ammo label updates when shots are fired and when a reload starts or finishes. Keyboard **R** or the mobile **Reload** button requests a reload.
+
+The controller uses Unity's legacy `UnityEngine.UI.Text` component for broad compatibility with the simple prototype. It does not create or style the UI objects automatically.
 
 ## 4. Test controls in the Editor
 
@@ -64,22 +73,23 @@ Make the buttons large enough to tap comfortably. Keep their labels/icons readab
 - **Space**: jump.
 - **Mouse movement** while the cursor is locked: rotate camera.
 - **Left mouse button**: fire the prototype raycast weapon.
+- **R**: reload.
 - **Escape**: unlock cursor; right-click to lock it again.
 - In a touch build, use the on-screen joystick, drag the right-side look area, and tap the action buttons.
 
-## 5. Known prototype limitations
+## 5. Current prototype limitations
 
-- The HUD and touch-control scripts need UI objects created and wired in the Unity Inspector.
-- No character/weapon models, animation controller, ammo/reload, audio, effects, pause menu, defeat screen, or save system yet.
+- The scripts are source-code foundations; they have **not yet been compiled or tested in Unity**.
+- HUD and touch-control scripts need UI objects created and wired in the Unity Inspector.
+- The game still needs character/weapon models, animations, audio, hit effects, a pause menu, and proper level art.
 - Enemy movement is simple straight-line chasing and can pass through obstacles.
 - The camera has no obstacle collision and may clip through walls.
 - The touch controls have not been tested on a physical Android device.
-- These are prototype limitations, not evidence of a release-ready game.
+- No claim is made that this is a release-ready or fully playable game yet.
 
 ## 6. Report bugs accurately
 
-If Unity shows a Console error, copy the full first red error and its file/line number. Fix compile errors before adding new features. After the first scene compiles and runs, priorities include camera collision, a proper game-state/death loop, enemy navigation, weapon feedback, and testing the touch layout on real devices.
-
+If Unity shows a Console error, copy the full first red error and its file/line number. Fix compile errors before adding new features. After the first scene compiles and runs, priorities include camera collision, enemy navigation, combat feedback, and testing the touch layout on real devices.
 
 ## 7. Defeat screen setup
 
@@ -95,4 +105,4 @@ When player health reaches zero, the controller displays the panel and pauses th
 
 ## 8. Survival pickup testing
 
-The existing `SurvivalStats.Heal` method can be called by a future pickup or inventory system. Healing is ignored if the player is already defeated or the healing amount is not positive.
+The existing `SurvivalStats.Heal` method can be called by a future pickup or inventory system. A dedicated world pickup object has not been implemented yet.
