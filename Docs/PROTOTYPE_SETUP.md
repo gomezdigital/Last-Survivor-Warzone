@@ -103,6 +103,22 @@ If Unity shows a Console error, copy the full first red error and its file/line 
 
 When player health reaches zero, the controller displays the panel and pauses the game. Restart resets the time scale and reloads the active scene.
 
-## 8. Survival pickup testing
+## 8. Enemy health HUD
 
-The existing `SurvivalStats.Heal` method can be called by a future pickup or inventory system. A dedicated world pickup object has not been implemented yet.
+1. Create a UI Slider for enemy health and an optional UI Text label.
+2. Attach `EnemyHealthHUDController` to a Canvas object.
+3. Assign the Player Transform, Slider, and optional label. If Player is left empty, the script tries to find the object with `SurvivalStats`.
+4. The controller looks for the nearest living `SimpleEnemyAI` within the configured visible range and updates its health display.
+
+This is a simple prototype display. It is not a world-space health bar above every enemy.
+
+## 9. Health and ammunition supply pickups
+
+1. Create a visible pickup object, such as a small green Cube for health or a yellow Cube for ammunition.
+2. Add a Collider and ensure **Is Trigger** is enabled. The `SupplyPickup` script also sets its Collider to trigger mode.
+3. Attach `SupplyPickup`.
+4. Choose **Health** or **Ammunition** as the Supply Type and set the amount.
+5. Make sure the Player has `SurvivalStats`. For ammunition supplies, also ensure a `SimpleWeapon` is attached to the Player or one of its children.
+6. Place the pickup where the player can walk into it. It is removed after a successful collection by default.
+
+Health supplies only disappear if they actually restore health; ammunition supplies only disappear if they add reserve ammunition. This is an early prototype: there is no pickup animation, inventory screen, sound, or save persistence yet.
