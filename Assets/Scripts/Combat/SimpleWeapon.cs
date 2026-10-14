@@ -3,8 +3,8 @@ using UnityEngine;
 using UnityEngine.Events;
 
 /// <summary>
-/// Prototype raycast weapon with magazine ammo, reload timing, and a fire-rate limit.
-/// Connect an on-screen MobileActionButton set to Reload for touch input.
+/// Prototype raycast weapon with magazine ammo, reload timing, a fire-rate limit,
+/// and simple events for HUD feedback.
 /// </summary>
 public class SimpleWeapon : MonoBehaviour
 {
@@ -16,7 +16,7 @@ public class SimpleWeapon : MonoBehaviour
 
     [Header("Ammunition")]
     [SerializeField, Min(1)] private int magazineSize = 12;
-    [SerializeField, Min(0f)] private int startingReserveAmmo = 60;
+    [SerializeField, Min(0)] private int startingReserveAmmo = 60;
     [SerializeField, Min(0.05f)] private float secondsBetweenShots = 0.25f;
     [SerializeField, Min(0.1f)] private float reloadDuration = 1.6f;
 
@@ -24,6 +24,8 @@ public class SimpleWeapon : MonoBehaviour
     [SerializeField] private SurvivalStats playerStats;
 
     public UnityEvent<int, int, bool> AmmoChanged = new UnityEvent<int, int, bool>();
+    public UnityEvent ShotFired = new UnityEvent();
+    public UnityEvent HitConfirmed = new UnityEvent();
 
     public int CurrentMagazineAmmo { get; private set; }
     public int ReserveAmmo { get; private set; }
@@ -80,6 +82,7 @@ public class SimpleWeapon : MonoBehaviour
         CurrentMagazineAmmo--;
         nextAllowedShotTime = Time.time + secondsBetweenShots;
         NotifyAmmoChanged();
+        ShotFired.Invoke();
 
         if (aimCamera == null)
         {
@@ -92,7 +95,10 @@ public class SimpleWeapon : MonoBehaviour
         {
             IDamageable damageable = hit.collider.GetComponentInParent<IDamageable>();
             if (damageable != null)
+            {
                 damageable.TakeDamage(damage);
+                HitConfirmed.Invoke();
+            }
         }
     }
 
