@@ -11,12 +11,14 @@ public static class MobileInputState
     public static bool SprintHeld { get; private set; }
     public static bool JumpPressed { get; private set; }
     public static bool FirePressed { get; private set; }
+    public static bool ReloadPressed { get; private set; }
 
     public static void SetMove(Vector2 value) => Move = Vector2.ClampMagnitude(value, 1f);
     public static void SetSprint(bool held) => SprintHeld = held;
     public static void AddLookDelta(Vector2 value) => LookDelta += value;
     public static void RequestJump() => JumpPressed = true;
     public static void RequestFire() => FirePressed = true;
+    public static void RequestReload() => ReloadPressed = true;
 
     public static bool ConsumeJumpPressed()
     {
@@ -29,6 +31,13 @@ public static class MobileInputState
     {
         bool pressed = FirePressed;
         FirePressed = false;
+        return pressed;
+    }
+
+    public static bool ConsumeReloadPressed()
+    {
+        bool pressed = ReloadPressed;
+        ReloadPressed = false;
         return pressed;
     }
 
@@ -46,5 +55,6 @@ public static class MobileInputState
         SprintHeld = false;
         JumpPressed = false;
         FirePressed = false;
+        ReloadPressed = false;
     }
 }
