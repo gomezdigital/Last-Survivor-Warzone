@@ -1,5 +1,7 @@
 # Development Roadmap
 
+This roadmap distinguishes source-code work from features that have been verified in a running Unity build. A checked script task means the code is in the repository, not that it has compiled or passed gameplay testing.
+
 ## Stage 0 — Repository foundation
 - [x] Create GitHub repository.
 - [x] Document vision, design pillars, architecture, and milestones.
@@ -8,23 +10,27 @@
 - [ ] Import scripts and confirm a clean compile.
 
 ## Stage 1 — First playable prototype
-- [ ] Player movement and camera.
-- [ ] Greybox test arena with collision and lighting.
-- [ ] Health/stamina feedback.
-- [ ] One enemy with navigation and attack behavior.
-- [ ] Weapon aiming, hit detection, and damage feedback.
-- [ ] Defeat and restart loop.
+- [x] Add player movement and camera scripts.
+- [ ] Create greybox test arena with collision and lighting.
+- [x] Add health/stamina system and HUD script.
+- [x] Add one basic enemy with chase and attack behavior.
+- [x] Add raycast weapon, damage interface, magazine ammo, fire-rate limit, and reload logic.
+- [x] Add a defeat/restart controller.
+- [ ] Wire all scene objects, UI, and buttons in Unity.
 - [ ] Test and fix Console errors.
+- [ ] Verify the complete gameplay loop in a running Unity build.
 
-**Exit gate:** the entire loop can be played repeatedly without blocking bugs.
+**Exit gate:** the entire loop can be played repeatedly without blocking bugs. This gate is not yet passed.
 
-## Stage 2 — Survival gameplay
-- [ ] Interactable supply containers.
-- [ ] Inventory and item definitions.
-- [ ] Ammunition and reloads.
-- [ ] Health items.
-- [ ] One objective/mission.
-- [ ] Basic save/load after core data stabilizes.
+## Stage 2 — Combat feedback and survival gameplay
+- [x] Add mobile input support for fire and reload requests.
+- [x] Add ammo label and centre-screen crosshair HUD controller.
+- [ ] Add visible hit confirmation and enemy health feedback.
+- [ ] Add interactable supply containers.
+- [ ] Add inventory and item definitions.
+- [ ] Add health items / world pickups.
+- [ ] Add one objective/mission.
+- [ ] Add basic save/load after core data stabilizes.
 
 ## Stage 3 — First polished region
 - [ ] Build one compact outpost/forest region.
@@ -34,10 +40,11 @@
 - [ ] Test on representative Android devices.
 
 ## Stage 4 — Mobile readiness
-- [ ] Touch movement and camera controls.
-- [ ] On-screen aim, fire, reload, interact, and pause buttons.
-- [ ] Graphics quality presets.
-- [ ] Frame-rate, memory, heat, and battery profiling.
+- [x] Add starter touch movement and camera-control scripts.
+- [x] Add starter on-screen fire, reload, jump, and sprint input support.
+- [ ] Create and wire the actual touchscreen UI in Unity.
+- [ ] Add graphics quality presets.
+- [ ] Profile frame rate, memory, heat, and battery.
 - [ ] Handle app pause/resume, low memory, and different screen sizes.
 - [ ] Verify build, install, launch, and play on real devices.
 
