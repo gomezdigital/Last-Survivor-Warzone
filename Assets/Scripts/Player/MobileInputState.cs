@@ -2,7 +2,7 @@ using UnityEngine;
 
 /// <summary>
 /// Shared input values written by on-screen mobile controls and read by gameplay scripts.
-/// Reset transient inputs each frame so taps are not repeated forever.
+/// Tap and look values are consumed once by the relevant gameplay component.
 /// </summary>
 public static class MobileInputState
 {
@@ -18,11 +18,25 @@ public static class MobileInputState
     public static void RequestJump() => JumpPressed = true;
     public static void RequestFire() => FirePressed = true;
 
-    public static void EndFrame()
+    public static bool ConsumeJumpPressed()
     {
-        LookDelta = Vector2.zero;
+        bool pressed = JumpPressed;
         JumpPressed = false;
+        return pressed;
+    }
+
+    public static bool ConsumeFirePressed()
+    {
+        bool pressed = FirePressed;
         FirePressed = false;
+        return pressed;
+    }
+
+    public static Vector2 ConsumeLookDelta()
+    {
+        Vector2 delta = LookDelta;
+        LookDelta = Vector2.zero;
+        return delta;
     }
 
     public static void ResetAll()
