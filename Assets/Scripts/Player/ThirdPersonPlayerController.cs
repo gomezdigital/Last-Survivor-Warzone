@@ -88,7 +88,8 @@ public class ThirdPersonPlayerController : MonoBehaviour
         if (characterController.isGrounded && verticalVelocity < 0f)
             verticalVelocity = -2f;
 
-        bool jumpRequested = Input.GetButtonDown("Jump") || MobileInputState.ConsumeJumpPressed();
+        bool mobileJumpRequested = MobileInputState.ConsumeJumpPressed();
+        bool jumpRequested = Input.GetButtonDown("Jump") || mobileJumpRequested;
         if (characterController.isGrounded && jumpRequested)
             verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
 
