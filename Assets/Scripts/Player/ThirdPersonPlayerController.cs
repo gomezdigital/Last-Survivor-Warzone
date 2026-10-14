@@ -43,6 +43,13 @@ public class ThirdPersonPlayerController : MonoBehaviour
         if (characterController == null || !characterController.enabled)
             return;
 
+        if (survivalStats != null && survivalStats.IsDead)
+        {
+            MobileInputState.SetMove(Vector2.zero);
+            MobileInputState.SetSprint(false);
+            return;
+        }
+
         MovePlayer();
     }
 
