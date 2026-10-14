@@ -1,8 +1,8 @@
 using UnityEngine;
 
 /// <summary>
-/// Simple third-person follow camera for early prototypes.
-/// Mouse look is intended for Editor testing; mobile drag input is not yet included.
+/// Third-person follow camera with mouse look in Editor and touch-drag look on mobile.
+/// Camera collision is a planned improvement and is not included yet.
 /// </summary>
 public class ThirdPersonCameraFollow : MonoBehaviour
 {
@@ -10,6 +10,7 @@ public class ThirdPersonCameraFollow : MonoBehaviour
     [SerializeField, Min(0.1f)] private float distance = 4.5f;
     [SerializeField, Min(0f)] private float height = 1.8f;
     [SerializeField, Min(0.1f)] private float lookSensitivity = 2f;
+    [SerializeField, Min(0.01f)] private float mobileLookMultiplier = 1f;
     [SerializeField, Range(-30f, 10f)] private float minPitch = -20f;
     [SerializeField, Range(10f, 80f)] private float maxPitch = 55f;
     [SerializeField, Min(0f)] private float positionSmooth = 12f;
@@ -27,8 +28,7 @@ public class ThirdPersonCameraFollow : MonoBehaviour
             return;
         }
 
-        Vector3 angles = transform.eulerAngles;
-        yaw = angles.y;
+        yaw = transform.eulerAngles.y;
 
         if (lockCursorInPlayMode)
             Cursor.lockState = CursorLockMode.Locked;
@@ -48,24 +48,20 @@ public class ThirdPersonCameraFollow : MonoBehaviour
         {
             yaw += Input.GetAxis("Mouse X") * lookSensitivity;
             pitch -= Input.GetAxis("Mouse Y") * lookSensitivity;
-            pitch = Mathf.Clamp(pitch, minPitch, maxPitch);
         }
+
+        Vector2 mobileLook = MobileInputState.ConsumeLookDelta();
+        yaw += mobileLook.x * mobileLookMultiplier;
+        pitch -= mobileLook.y * mobileLookMultiplier;
+        pitch = Mathf.Clamp(pitch, minPitch, maxPitch);
 
         Quaternion rotation = Quaternion.Euler(pitch, yaw, 0f);
         Vector3 focusPoint = target.position + Vector3.up * height;
         Vector3 desiredPosition = focusPoint - rotation * Vector3.forward * distance;
 
-        transform.position = Vector3.Lerp(
-            transform.position,
-            desiredPosition,
-            positionSmooth * Time.deltaTime
-        );
-
+        transform.position = Vector3.Lerp(transform.position, desiredPosition, positionSmooth * Time.deltaTime);
         transform.rotation = rotation;
     }
 
-    public void SetTarget(Transform newTarget)
-    {
-        target = newTarget;
-    }
+    public void SetTarget(Transform newTarget) => target = newTarget;
 }
