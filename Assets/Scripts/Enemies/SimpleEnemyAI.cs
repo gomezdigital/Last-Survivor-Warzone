@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 /// <summary>
 /// Simple distance-based enemy prototype for a flat test arena.
@@ -13,7 +14,7 @@ public class SimpleEnemyAI : MonoBehaviour, IDamageable
     [SerializeField, Min(0f)] private float stopDistance = 1.8f;
 
     [Header("Combat")]
-    [SerializeField, Min(0f)] private float maxHealth = 60f;
+    [SerializeField, Min(1f)] private float maxHealth = 60f;
     [SerializeField, Min(0f)] private float damagePerAttack = 10f;
     [SerializeField, Min(0.1f)] private float attackInterval = 1.5f;
     [SerializeField, Min(0f)] private float attackRange = 2f;
@@ -22,32 +23,37 @@ public class SimpleEnemyAI : MonoBehaviour, IDamageable
     [SerializeField, Min(0f)] private float moveSpeed = 2.5f;
     [SerializeField, Min(0f)] private float turnSpeed = 8f;
 
-    private float currentHealth;
+    public UnityEvent<float, float> HealthChanged = new UnityEvent<float, float>();
+    public UnityEvent Defeated = new UnityEvent();
+
+    public float CurrentHealth { get; private set; }
+    public float MaxHealth => Mathf.Max(1f, maxHealth);
+    public bool IsDead { get; private set; }
+
     private float nextAttackTime;
-    private bool isDead;
+    private SurvivalStats cachedPlayerStats;
 
     private void Awake()
     {
-        currentHealth = Mathf.Max(1f, maxHealth);
+        maxHealth = Mathf.Max(1f, maxHealth);
+        CurrentHealth = maxHealth;
     }
 
     private void Start()
     {
-        if (player == null)
-        {
-            SurvivalStats stats = FindObjectOfType<SurvivalStats>();
-            if (stats != null)
-                player = stats.transform;
-        }
+        ResolvePlayer();
+        HealthChanged.Invoke(CurrentHealth, MaxHealth);
     }
 
     private void Update()
     {
-        if (isDead || player == null)
+        if (IsDead || player == null)
             return;
 
-        SurvivalStats playerStats = player.GetComponent<SurvivalStats>();
-        if (playerStats != null && playerStats.IsDead)
+        if (cachedPlayerStats == null)
+            cachedPlayerStats = player.GetComponent<SurvivalStats>();
+
+        if (cachedPlayerStats != null && cachedPlayerStats.IsDead)
             return;
 
         Vector3 toPlayer = player.position - transform.position;
@@ -75,8 +81,8 @@ public class SimpleEnemyAI : MonoBehaviour, IDamageable
 
         if (distance <= attackRange && Time.time >= nextAttackTime)
         {
-            if (playerStats != null)
-                playerStats.TakeDamage(damagePerAttack);
+            if (cachedPlayerStats != null)
+                cachedPlayerStats.TakeDamage(damagePerAttack);
 
             nextAttackTime = Time.time + attackInterval;
         }
@@ -84,15 +90,29 @@ public class SimpleEnemyAI : MonoBehaviour, IDamageable
 
     public void TakeDamage(float amount)
     {
-        if (isDead || amount <= 0f)
+        if (IsDead || amount <= 0f)
             return;
 
-        currentHealth = Mathf.Max(0f, currentHealth - amount);
+        CurrentHealth = Mathf.Clamp(CurrentHealth - amount, 0f, MaxHealth);
+        HealthChanged.Invoke(CurrentHealth, MaxHealth);
 
-        if (currentHealth <= 0f)
+        if (CurrentHealth <= 0f)
         {
-            isDead = true;
+            IsDead = true;
+            Defeated.Invoke();
             gameObject.SetActive(false);
         }
+    }
+
+    private void ResolvePlayer()
+    {
+        if (player == null)
+        {
+            SurvivalStats stats = FindObjectOfType<SurvivalStats>();
+            if (stats != null)
+                player = stats.transform;
+        }
+
+        cachedPlayerStats = player != null ? player.GetComponent<SurvivalStats>() : null;
     }
 }
