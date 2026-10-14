@@ -26,10 +26,10 @@ This roadmap distinguishes source-code work from features that have been verifie
 - [x] Add mobile input support for fire and reload requests.
 - [x] Add ammo label and centre-screen crosshair HUD controller.
 - [x] Add a brief crosshair hit marker when a damageable target is hit.
-- [ ] Add enemy health feedback.
+- [x] Add a nearby-enemy health HUD script.
 - [ ] Add interactable supply containers.
 - [ ] Add inventory and item definitions.
-- [ ] Add health items / world pickups.
+- [x] Add trigger-based health and ammunition supply pickup script.
 - [ ] Add one objective/mission.
 - [ ] Add basic save/load after core data stabilizes.
 
