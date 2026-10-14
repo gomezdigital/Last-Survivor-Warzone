@@ -25,7 +25,8 @@ This roadmap distinguishes source-code work from features that have been verifie
 ## Stage 2 — Combat feedback and survival gameplay
 - [x] Add mobile input support for fire and reload requests.
 - [x] Add ammo label and centre-screen crosshair HUD controller.
-- [ ] Add visible hit confirmation and enemy health feedback.
+- [x] Add a brief crosshair hit marker when a damageable target is hit.
+- [ ] Add enemy health feedback.
 - [ ] Add interactable supply containers.
 - [ ] Add inventory and item definitions.
 - [ ] Add health items / world pickups.
