@@ -2,12 +2,12 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 /// <summary>
-/// Attach to UI button Images for Sprint, Jump, or Fire.
+/// Attach to UI button Images for Sprint, Jump, Fire, or Reload.
 /// Sprint is held while the finger is down; Jump and Fire trigger once per press.
 /// </summary>
 public class MobileActionButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerClickHandler
 {
-    public enum ActionType { Sprint, Jump, Fire }
+    public enum ActionType { Sprint, Jump, Fire, Reload }
 
     [SerializeField] private ActionType action = ActionType.Fire;
 
@@ -29,6 +29,8 @@ public class MobileActionButton : MonoBehaviour, IPointerDownHandler, IPointerUp
             MobileInputState.RequestJump();
         else if (action == ActionType.Fire)
             MobileInputState.RequestFire();
+        else if (action == ActionType.Reload)
+            MobileInputState.RequestReload();
     }
 
     private void OnDisable()
