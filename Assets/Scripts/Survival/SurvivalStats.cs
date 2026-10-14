@@ -15,9 +15,9 @@ public class SurvivalStats : MonoBehaviour
     [SerializeField, Min(1f)] private float maxStamina = 100f;
     [SerializeField, Min(0f)] private float startingStamina = 100f;
 
-    public UnityEvent<float, float> HealthChanged;
-    public UnityEvent<float, float> StaminaChanged;
-    public UnityEvent Died;
+    public UnityEvent<float, float> HealthChanged = new UnityEvent<float, float>();
+    public UnityEvent<float, float> StaminaChanged = new UnityEvent<float, float>();
+    public UnityEvent Died = new UnityEvent();
 
     public float CurrentHealth { get; private set; }
     public float CurrentStamina { get; private set; }
