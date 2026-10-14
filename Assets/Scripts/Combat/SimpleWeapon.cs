@@ -19,7 +19,8 @@ public class SimpleWeapon : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetButtonDown("Fire1") || MobileInputState.ConsumeFirePressed())
+        bool mobileFireRequested = MobileInputState.ConsumeFirePressed();
+        if (Input.GetButtonDown("Fire1") || mobileFireRequested)
             Fire();
     }
 
