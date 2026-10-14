@@ -102,6 +102,17 @@ public class SimpleWeapon : MonoBehaviour
         }
     }
 
+    public int AddReserveAmmo(int amount)
+    {
+        if (amount <= 0 || (playerStats != null && playerStats.IsDead))
+            return 0;
+
+        int before = ReserveAmmo;
+        ReserveAmmo += amount;
+        NotifyAmmoChanged();
+        return ReserveAmmo - before;
+    }
+
     public void Reload()
     {
         if (IsReloading || CurrentMagazineAmmo >= magazineSize || ReserveAmmo <= 0)
