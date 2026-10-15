@@ -122,3 +122,17 @@ This is a simple prototype display. It is not a world-space health bar above eve
 6. Place the pickup where the player can walk into it. It is removed after a successful collection by default.
 
 Health supplies only disappear if they actually restore health; ammunition supplies only disappear if they add reserve ammunition. This is an early prototype: there is no pickup animation, inventory screen, sound, or save persistence yet.
+
+
+## 10. Mission 001 — Secure the Outpost
+
+1. Create an empty GameObject named `MissionController` and attach `MissionObjectiveController`.
+2. In **Objective Enemies**, set the array size to the number of enemies in this mission and drag each enemy GameObject into a slot. Assign every enemy before pressing Play.
+3. Set **Required Kills** to the number the player must defeat. It cannot exceed the assigned array size when enemies are assigned.
+4. Add a UI Text for mission progress and assign it to **Objective Text**. It displays the mission name and defeated-enemy count.
+5. Create a hidden victory panel with a UI Text child and a Button. Assign the panel and text to **Mission Complete Panel** and **Completion Message**.
+6. On the victory Button's **On Click** event, drag the MissionController object into the target slot and select `MissionObjectiveController.RestartMission`.
+7. Add the scene to **File > Build Profiles** (or **Build Settings** in older Unity versions) so restart can reload it.
+8. Enter Play mode, defeat the assigned number of enemies, and confirm the victory panel appears. Also test player death: victory must not appear before the required enemies are defeated.
+
+The mission controller subscribes to each assigned enemy's `Defeated` event, so the enemy being disabled after defeat does not prevent the kill from counting. This script has been committed to GitHub but still needs a real Unity compile and Play Mode test.
