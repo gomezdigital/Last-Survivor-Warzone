@@ -136,3 +136,18 @@ Health supplies only disappear if they actually restore health; ammunition suppl
 8. Enter Play mode, defeat the assigned number of enemies, and confirm the victory panel appears. Also test player death: victory must not appear before the required enemies are defeated.
 
 The mission controller subscribes to each assigned enemy's `Defeated` event, so the enemy being disabled after defeat does not prevent the kill from counting. This script has been committed to GitHub but still needs a real Unity compile and Play Mode test.
+
+
+## 11. Generate the initial greybox scene automatically
+
+The repository includes an Editor utility at `Assets/Editor/InitialSceneBuilder.cs`. It creates a first test scene and wires the prototype scripts and UI to reduce manual Inspector setup.
+
+1. Open a Unity 3D project using a supported Unity LTS version.
+2. Copy the repository's complete `Assets/Scripts` folder and the `Assets/Editor` folder into the Unity project's `Assets` folder. Keep the Editor script inside `Assets/Editor`; it uses UnityEditor APIs and must not be placed in a runtime folder.
+3. Wait for Unity to import and compile. Resolve any red Console errors first.
+4. In the Unity menu, select **Last Survivor > Build Mission 001 Scene**.
+5. The builder creates `Assets/Scenes/Mission001_SecureTheOutpost.unity`, simple materials, a small walled outpost, player capsule, three enemies, two supply pickups, camera, HUD, mobile controls, mission-complete panel, defeat panel, and restart buttons. It also registers the scene in Build Settings / Build Profiles.
+6. Open the generated scene if it is not already open, save it, and press **Play**.
+7. Test keyboard movement, mouse camera control, aiming, firing, reloading, enemy damage, supplies, defeat, victory, and restart. Then test the touch UI in a device build when available.
+
+The builder is an editor-time scene generator, not a compiled game or a finished art pass. The generated scene and its scripts still need to be compiled and tested in the Unity Editor. If Unity reports an error, fix the first red Console error before continuing. Do not run the builder until the runtime scripts compile successfully.
