@@ -6,7 +6,7 @@
 Last Survivor: Warzone is an ambitious survival-action project focused on exploration, scavenging, tactical combat, environmental danger, and meaningful player progression. The long-term vision is a detailed world with abandoned cities, forests, military installations, deserts, snowy mountains, underground bunkers, and industrial zones.
 
 ## Current status
-**Pre-production / prototype foundation.** This repository contains the game design, technical plan, and starter Unity C# scripts. It is not yet a complete Unity project or a playable Android release. The scripts must be imported into a Unity project and tested in the Unity Editor before they can be considered working game features.
+**Pre-production / prototype foundation.** This repository contains the game design, technical plan, and starter Unity C# scripts, including an enemy-count objective and mission victory controller. It is not yet a complete Unity project or a playable Android release. The scripts must be imported into a Unity project and tested in the Unity Editor before they can be considered working game features.
 
 ## Development principles
 - Build a small, playable vertical slice before expanding the world.
@@ -22,7 +22,7 @@ Last Survivor: Warzone is an ambitious survival-action project focused on explor
 3. Basic health and stamina.
 4. One hostile enemy with simple chase and attack behavior.
 5. A basic hitscan weapon prototype.
-6. Clear objectives and a restart/death loop.
+6. Clear objectives, a victory screen, and a restart/death loop.
 7. Android touch controls and performance testing.
 
 ## Planned world regions
