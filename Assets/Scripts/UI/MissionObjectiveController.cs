@@ -61,6 +61,8 @@ public class MissionObjectiveController : MonoBehaviour
         if (subscribed || objectiveEnemies == null)
             return;
 
+        DefeatedCount = 0;
+
         foreach (SimpleEnemyAI enemy in objectiveEnemies)
         {
             if (enemy == null)
