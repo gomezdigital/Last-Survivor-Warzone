@@ -11,13 +11,13 @@ This roadmap distinguishes source-code work from features that have been verifie
 
 ## Stage 1 — First playable prototype
 - [x] Add player movement and camera scripts.
-- [ ] Create greybox test arena with collision and lighting.
+- [x] Add an Editor utility that generates a greybox test arena with collision, lighting, enemies, supplies, HUD, and restart/victory UI (actual generation and verification still pending in Unity).
 - [x] Add health/stamina system and HUD script.
 - [x] Add one basic enemy with chase and attack behavior.
 - [x] Add raycast weapon, damage interface, magazine ammo, fire-rate limit, and reload logic.
 - [x] Add a defeat/restart controller.
-- [ ] Wire all scene objects, UI, and buttons in Unity, including mission progress/victory UI.
-- [ ] Compile all scripts in Unity and fix Console errors.
+- [x] Add Editor scene-builder wiring for scene objects, UI, and buttons.\n- [ ] Run the scene builder in Unity and verify all references and buttons.
+- [ ] Compile all scripts in Unity and fix Console errors, including the Editor scene builder.
 - [ ] Verify the complete gameplay loop in a running Unity build.
 
 **Exit gate:** the entire loop can be played repeatedly without blocking bugs. This gate is not yet passed.
