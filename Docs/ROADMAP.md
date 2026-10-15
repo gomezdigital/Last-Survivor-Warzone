@@ -16,8 +16,8 @@ This roadmap distinguishes source-code work from features that have been verifie
 - [x] Add one basic enemy with chase and attack behavior.
 - [x] Add raycast weapon, damage interface, magazine ammo, fire-rate limit, and reload logic.
 - [x] Add a defeat/restart controller.
-- [ ] Wire all scene objects, UI, and buttons in Unity.
-- [ ] Test and fix Console errors.
+- [ ] Wire all scene objects, UI, and buttons in Unity, including mission progress/victory UI.
+- [ ] Compile all scripts in Unity and fix Console errors.
 - [ ] Verify the complete gameplay loop in a running Unity build.
 
 **Exit gate:** the entire loop can be played repeatedly without blocking bugs. This gate is not yet passed.
@@ -30,7 +30,7 @@ This roadmap distinguishes source-code work from features that have been verifie
 - [ ] Add interactable supply containers.
 - [ ] Add inventory and item definitions.
 - [x] Add trigger-based health and ammunition supply pickup script.
-- [ ] Add one objective/mission.
+- [x] Add a starter enemy-count mission objective and victory panel controller (Unity wiring/testing still pending).
 - [ ] Add basic save/load after core data stabilizes.
 
 ## Stage 3 — First polished region
