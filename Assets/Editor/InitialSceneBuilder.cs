@@ -145,9 +145,9 @@ public static class InitialSceneBuilder
         defeatPanel.SetActive(false);
 
         CreateEventSystem();
-        AddSceneToBuildSettings(scene.path);
         EditorSceneManager.MarkSceneDirty(scene);
         EditorSceneManager.SaveScene(scene, ScenePath);
+        AddSceneToBuildSettings(ScenePath);
         Selection.activeGameObject = player;
 
         Debug.Log("Mission 001 scene created at " + ScenePath +
