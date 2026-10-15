@@ -47,7 +47,7 @@ These are long-term goals, not features that are already implemented.
 - `Assets/Scripts/Player/` — player movement and camera prototype
 - `Assets/Scripts/Survival/` — health and stamina prototype
 - `Assets/Scripts/Combat/` — basic weapon prototype
-- `Assets/Scripts/Enemies/` — simple enemy behavior prototype
+- `Assets/Scripts/Enemies/` — simple enemy behavior prototype\n- `Assets/Editor/InitialSceneBuilder.cs` — Unity Editor utility that generates the initial greybox mission scene
 - `Docs/` — design, architecture, and roadmap
 
 ## How to use the starter scripts
